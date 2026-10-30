@@ -233,6 +233,29 @@
   }
   .gb-empty em { font-family: var(--latin); font-style: italic; display: block; font-size: 22px; color: var(--terracotta); margin-bottom: 6px; }
 
+  .gb-ai { margin-top: 56px; padding-top: 36px; border-top: 1px solid var(--line); display: grid; gap: 20px; justify-items: start; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; border-radius: 999px;
+    background: transparent; color: var(--rust); border: 1px solid var(--terracotta);
+    font: inherit; font-size: 15px; letter-spacing: .18em; cursor: pointer;
+    transition: background .4s var(--ease), color .4s var(--ease), transform .4s var(--ease);
+  }
+  .btn-ghost .spark { color: var(--amber); font-size: 14px; transition: transform .6s var(--ease); }
+  .btn-ghost:hover { background: var(--terracotta); color: var(--paper); transform: translateY(-2px); }
+  .btn-ghost:hover .spark { color: var(--paper); transform: rotate(180deg); }
+  .btn-ghost:disabled { opacity: .55; cursor: wait; transform: none; }
+  .btn-ghost:disabled .spark { animation: spin 1.2s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .gb-ai-result {
+    width: 100%; max-width: 720px; background: var(--paper); border: 1px solid rgba(74,51,38,.08);
+    border-left: 3px solid var(--terracotta); padding: 28px 32px; animation: up .8s var(--ease) both;
+  }
+  .gb-ai-result[hidden] { display: none; }
+  .gb-ai-result .meta { font-size: 12px; letter-spacing: .2em; color: var(--muted); margin-bottom: 12px; }
+  .gb-ai-result .meta em { font-family: var(--latin); font-style: italic; letter-spacing: 0; font-size: 14px; color: var(--terracotta); }
+  .gb-ai-result .text { font-family: var(--serif); font-size: clamp(18px, 2vw, 22px); line-height: 1.7; color: var(--ink); }
+  .gb-ai-result.error .text { font-family: var(--sans); font-size: 15px; color: var(--rust); }
+
   /* 聯絡 */
   .contact { text-align: center; padding-block: 160px 120px; }
   .contact h2 {
@@ -400,6 +423,13 @@
           <li class="gb-empty"><em>Loading…</em>正在載入留言</li>
         </ul>
       </div>
+      <div class="gb-ai reveal">
+        <button type="button" class="btn-ghost" id="gb-ai-btn"><span class="spark">✦</span>AI 一句話總結</button>
+        <div class="gb-ai-result" id="gb-ai-result" hidden role="status" aria-live="polite">
+          <div class="meta"><em>AI Summary</em> <span id="gb-ai-meta"></span></div>
+          <p class="text" id="gb-ai-text"></p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -503,6 +533,33 @@
         setStatus(err.message || '送出失敗，請稍後再試。');
       } finally {
         submit.disabled = false;
+      }
+    });
+
+
+    // AI 一句話總結
+    const aiBtn = document.getElementById('gb-ai-btn');
+    const aiBox = document.getElementById('gb-ai-result');
+    const aiMeta = document.getElementById('gb-ai-meta');
+    const aiText = document.getElementById('gb-ai-text');
+
+    aiBtn.addEventListener('click', async () => {
+      aiBtn.disabled = true;
+      aiBox.hidden = false; aiBox.classList.remove('error');
+      aiMeta.textContent = '· 正在閱讀留言…';
+      aiText.textContent = '';
+      try {
+        const res = await fetch('/api/summary', { method: 'POST' });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || '總結失敗');
+        aiMeta.textContent = data.count ? `· 根據 ${data.count} 則留言` : '';
+        aiText.textContent = data.summary;
+      } catch (err) {
+        aiBox.classList.add('error');
+        aiMeta.textContent = '';
+        aiText.textContent = err.message || '總結失敗，請稍後再試。';
+      } finally {
+        aiBtn.disabled = false;
       }
     });
 
