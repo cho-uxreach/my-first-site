@@ -19,8 +19,8 @@ function ensureTable(sql) {
     tableReady = sql`
       CREATE TABLE IF NOT EXISTS guestbook (
         id SERIAL PRIMARY KEY,
-        name VARCHAR(${NAME_MAX}) NOT NULL,
-        message VARCHAR(${MESSAGE_MAX}) NOT NULL,
+        name VARCHAR(30) NOT NULL,
+        message VARCHAR(140) NOT NULL,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `.catch((err) => { tableReady = undefined; throw err; });
