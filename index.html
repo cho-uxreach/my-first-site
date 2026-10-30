@@ -188,6 +188,51 @@
   .values li .k { font-family: var(--serif); font-weight: 600; font-size: 22px; letter-spacing: .1em; color: var(--rust); }
   .values li .v { font-size: 15px; color: var(--cocoa); }
 
+  /* 留言板 */
+  .guestbook { background: var(--sand); position: relative; }
+  .guestbook::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--terracotta), transparent);
+  }
+  .gb-grid { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
+  .gb-intro h2 {
+    font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 3.6vw, 44px);
+    line-height: 1.3; letter-spacing: .04em; margin-bottom: 20px;
+  }
+  .gb-intro p { color: var(--cocoa); font-size: 16px; max-width: 380px; margin-bottom: 36px; }
+  .gb-form { display: grid; gap: 14px; }
+  .gb-form label { display: grid; gap: 6px; font-size: 13px; letter-spacing: .15em; color: var(--rust); }
+  .gb-form input, .gb-form textarea {
+    width: 100%; font: inherit; font-size: 16px; color: var(--ink);
+    background: var(--paper); border: 1px solid var(--line); border-radius: 4px;
+    padding: 14px 16px; outline: none; resize: none;
+    transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
+  }
+  .gb-form input:focus, .gb-form textarea:focus {
+    border-color: var(--terracotta); box-shadow: 0 0 0 4px rgba(201,96,58,.12);
+  }
+  .gb-form .row { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .gb-form .count { font-size: 12px; letter-spacing: .1em; color: var(--muted); }
+  .gb-form .btn { padding: 14px 36px; border: 0; cursor: pointer; font-family: inherit; }
+  .gb-form .btn:disabled { opacity: .55; cursor: wait; transform: none; box-shadow: none; }
+  .gb-status { font-size: 14px; color: var(--rust); min-height: 1.6em; }
+  .gb-status.ok { color: #5c7a3f; }
+  .gb-list { list-style: none; display: grid; gap: 16px; }
+  .gb-item {
+    background: var(--paper); padding: 24px 28px; position: relative;
+    border: 1px solid rgba(74,51,38,.08); border-left: 3px solid var(--amber);
+    animation: up .8s var(--ease) both;
+  }
+  .gb-item .who { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+  .gb-item .name { font-family: var(--serif); font-weight: 600; font-size: 18px; letter-spacing: .08em; }
+  .gb-item time { font-size: 12px; letter-spacing: .08em; color: var(--muted); white-space: nowrap; }
+  .gb-item .msg { color: var(--cocoa); font-size: 16px; overflow-wrap: anywhere; }
+  .gb-empty {
+    padding: 48px 28px; text-align: center; color: var(--muted); font-size: 15px;
+    border: 1px dashed var(--line);
+  }
+  .gb-empty em { font-family: var(--latin); font-style: italic; display: block; font-size: 22px; color: var(--terracotta); margin-bottom: 6px; }
+
   /* 聯絡 */
   .contact { text-align: center; padding-block: 160px 120px; }
   .contact h2 {
@@ -232,6 +277,7 @@
   @media (max-width: 1000px) {
     .belief { grid-template-columns: 1fr; gap: 32px; }
     .belief .text { max-width: 640px; }
+    .gb-grid { grid-template-columns: 1fr; gap: 40px; }
   }
   @media (max-width: 860px) {
     .wrap { width: min(1120px, 100% - 32px); }
@@ -259,6 +305,7 @@
       <li><a href="#belief">理念</a></li>
       <li><a href="#how">方法</a></li>
       <li><a href="#values">價值</a></li>
+      <li><a href="#guestbook">留言</a></li>
       <li><a href="#contact">聯絡</a></li>
     </ul>
   </nav>
@@ -328,6 +375,34 @@
     </ul>
   </section>
 
+  <section id="guestbook" class="guestbook">
+    <div class="wrap">
+      <div class="label reveal">留言板 <em>Guestbook</em></div>
+      <div class="gb-grid">
+        <div class="gb-intro reveal">
+          <h2>留下一句話，<br>讓這裡多一點你的聲音。</h2>
+          <p>名字和一句話就好。送出後會馬上出現在留言列表裡，換一台裝置回來也還在。</p>
+          <form class="gb-form" id="gb-form" novalidate>
+            <label>名字
+              <input type="text" name="name" maxlength="30" autocomplete="nickname" placeholder="你希望被怎麼稱呼" required>
+            </label>
+            <label>一句話
+              <textarea name="message" rows="3" maxlength="140" placeholder="想說什麼都可以" required></textarea>
+            </label>
+            <div class="row">
+              <span class="count"><span id="gb-count">0</span> / 140</span>
+              <button type="submit" class="btn" id="gb-submit">送出留言</button>
+            </div>
+            <p class="gb-status" id="gb-status" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <ul class="gb-list reveal" id="gb-list" aria-live="polite">
+          <li class="gb-empty"><em>Loading…</em>正在載入留言</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section id="contact" class="wrap contact">
     <h2 class="reveal">一起聊聊<span class="latin">Let's talk about empowering people.</span></h2>
     <p class="reveal">如果你也相信服務可以讓人更有力量，無論是合作、交流或只是想聊聊，都歡迎與我聯繫。</p>
@@ -352,6 +427,87 @@
     });
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // 留言板
+  (() => {
+    const API = '/api/guestbook';
+    const form = document.getElementById('gb-form');
+    const list = document.getElementById('gb-list');
+    const status = document.getElementById('gb-status');
+    const submit = document.getElementById('gb-submit');
+    const count = document.getElementById('gb-count');
+    const textarea = form.elements.message;
+
+    const fmt = new Intl.DateTimeFormat('zh-TW', { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+
+    function render(entries) {
+      list.innerHTML = '';
+      if (!entries.length) {
+        list.insertAdjacentHTML('beforeend', '<li class="gb-empty"><em>Be the first.</em>還沒有人留言，第一個就是你。</li>');
+        return;
+      }
+      entries.forEach((e, i) => list.appendChild(item(e, i)));
+    }
+
+    function item(e, i = 0) {
+      const li = document.createElement('li');
+      li.className = 'gb-item';
+      li.style.animationDelay = `${Math.min(i, 6) * 0.06}s`;
+      const who = document.createElement('div'); who.className = 'who';
+      const name = document.createElement('span'); name.className = 'name'; name.textContent = e.name;
+      const time = document.createElement('time'); time.dateTime = e.created_at; time.textContent = fmt.format(new Date(e.created_at));
+      const msg = document.createElement('p'); msg.className = 'msg'; msg.textContent = e.message;
+      who.append(name, time); li.append(who, msg);
+      return li;
+    }
+
+    function setStatus(text, ok = false) {
+      status.textContent = text;
+      status.classList.toggle('ok', ok);
+    }
+
+    async function load() {
+      try {
+        const res = await fetch(API, { cache: 'no-store' });
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        render(data.entries || []);
+      } catch {
+        list.innerHTML = '<li class="gb-empty"><em>Hmm.</em>留言暫時載入不了，稍後再試一次。</li>';
+      }
+    }
+
+    textarea.addEventListener('input', () => { count.textContent = textarea.value.length; });
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const name = form.elements.name.value.trim();
+      const message = textarea.value.trim();
+      if (!name || !message) { setStatus('名字和留言都要填喔。'); return; }
+
+      submit.disabled = true; setStatus('送出中…');
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, message })
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || '送出失敗');
+        const empty = list.querySelector('.gb-empty');
+        if (empty) empty.remove();
+        list.prepend(item(data.entry));
+        form.reset(); count.textContent = '0';
+        setStatus('謝謝你，留言已經放上去了。', true);
+      } catch (err) {
+        setStatus(err.message || '送出失敗，請稍後再試。');
+      } finally {
+        submit.disabled = false;
+      }
+    });
+
+    load();
+  })();
 </script>
 </body>
 </html>
