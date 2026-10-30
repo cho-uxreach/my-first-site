@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>卓致遠｜服務設計師</title>
+<meta name="description" content="卓致遠，服務設計師。我喜歡賦予使用者能力。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=Noto+Serif+TC:wght@400;600;900&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FBF4E8;
+    --sand: #F1E3CF;
+    --paper: #FFFBF4;
+    --terracotta: #C9603A;
+    --amber: #E6A045;
+    --rust: #96401F;
+    --cocoa: #4A3326;
+    --ink: #2B1C14;
+    --muted: #8A7262;
+    --line: rgba(74, 51, 38, 0.18);
+
+    --serif: "Noto Serif TC", "Songti TC", serif;
+    --sans: "Noto Sans TC", "PingFang TC", sans-serif;
+    --latin: "Fraunces", Georgia, serif;
+
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    font-weight: 300;
+    color: var(--ink);
+    background: var(--cream);
+    line-height: 1.8;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--amber); color: var(--ink); }
+
+  /* 背景氛圍：暖色光暈 + 細顆粒 */
+  .glow {
+    position: fixed; inset: 0; z-index: -2; pointer-events: none;
+    background:
+      radial-gradient(60vw 60vw at 85% -10%, rgba(230,160,69,0.45), transparent 60%),
+      radial-gradient(50vw 50vw at -10% 70%, rgba(201,96,58,0.28), transparent 60%),
+      var(--cream);
+  }
+  .grain {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.2 0 0 0 0 0.1 0 0 0 .08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap { width: min(1120px, 100% - 48px); margin-inline: auto; }
+
+  /* 導覽 */
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 0;
+    font-size: 14px; letter-spacing: .08em;
+  }
+  nav .logo { font-family: var(--serif); font-weight: 600; font-size: 18px; letter-spacing: .2em; }
+  nav ul { display: flex; gap: 32px; list-style: none; }
+  nav a { color: var(--cocoa); text-decoration: none; position: relative; }
+  nav a::after {
+    content: ""; position: absolute; left: 0; bottom: -4px; height: 1px; width: 100%;
+    background: var(--terracotta); transform: scaleX(0); transform-origin: right;
+    transition: transform .4s var(--ease);
+  }
+  nav a:hover::after { transform: scaleX(1); transform-origin: left; }
+
+  /* 首屏 */
+  .hero {
+    min-height: calc(100svh - 96px);
+    display: grid; grid-template-columns: 1fr 1fr; align-items: end;
+    padding-block: 48px 72px; gap: 40px;
+    position: relative;
+  }
+  .hero .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 13px; letter-spacing: .3em; color: var(--rust); text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+  .hero .eyebrow::before { content: ""; width: 36px; height: 1px; background: var(--terracotta); }
+  .hero h1 {
+    font-family: var(--serif); font-weight: 900;
+    font-size: clamp(64px, 11vw, 156px); line-height: 1.02; letter-spacing: .04em;
+    color: var(--ink);
+  }
+  .hero h1 .latin {
+    display: block; font-family: var(--latin); font-weight: 300; font-style: italic;
+    font-size: .34em; letter-spacing: 0; color: var(--terracotta); margin-top: .2em;
+  }
+  .hero .role {
+    font-family: var(--serif); font-size: clamp(20px, 2.4vw, 28px); font-weight: 400;
+    color: var(--cocoa); margin-top: 24px; letter-spacing: .12em;
+  }
+  .hero .statement {
+    align-self: end; justify-self: end; max-width: 420px;
+    padding-left: 32px; border-left: 1px solid var(--line);
+  }
+  .hero .statement p { font-size: 17px; color: var(--cocoa); }
+  .hero .statement p strong {
+    font-family: var(--serif); font-weight: 600; color: var(--ink);
+    background: linear-gradient(transparent 62%, rgba(230,160,69,.55) 62%);
+  }
+  .hero .scroll {
+    position: absolute; bottom: 0; left: 0;
+    font-size: 12px; letter-spacing: .3em; color: var(--muted);
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero .scroll span { display: block; width: 1px; height: 48px; background: var(--line); position: relative; overflow: hidden; }
+  .hero .scroll span::after {
+    content: ""; position: absolute; inset: 0; background: var(--terracotta);
+    animation: drip 2.2s var(--ease) infinite;
+  }
+  @keyframes drip { 0% { transform: translateY(-100%); } 60%,100% { transform: translateY(100%); } }
+
+  /* 跑馬帶 */
+  .band {
+    border-block: 1px solid var(--line); padding: 18px 0; overflow: hidden;
+    font-family: var(--latin); font-style: italic; font-weight: 300;
+    font-size: 20px; color: var(--rust); white-space: nowrap;
+  }
+  .band .track { display: inline-flex; gap: 48px; animation: slide 38s linear infinite; }
+  .band .track span::after { content: "✦"; margin-left: 48px; color: var(--amber); font-style: normal; font-size: 14px; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+
+  /* 共用區塊 */
+  section { padding-block: 120px; }
+  .label {
+    font-size: 13px; letter-spacing: .3em; color: var(--rust);
+    display: flex; align-items: center; gap: 12px; margin-bottom: 40px;
+  }
+  .label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .label em { font-family: var(--latin); font-style: italic; font-weight: 300; letter-spacing: 0; font-size: 15px; color: var(--muted); }
+
+  /* 理念 */
+  .belief { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: start; }
+  .belief h2 {
+    font-family: var(--serif); font-weight: 600; font-size: clamp(32px, 4.2vw, 56px);
+    line-height: 1.25; letter-spacing: .04em;
+  }
+  .belief h2 .mark { color: var(--terracotta); white-space: nowrap; }
+  .belief .text { font-size: 17px; color: var(--cocoa); display: grid; gap: 24px; max-width: 560px; padding-top: 12px; }
+  .belief .text p:first-child::first-letter {
+    font-family: var(--serif); font-weight: 900; font-size: 3.2em; float: left;
+    line-height: .85; margin: 6px 10px 0 0; color: var(--terracotta);
+  }
+
+  /* 工作方式 */
+  .how { background: var(--sand); position: relative; }
+  .how::before {
+    content: ""; position: absolute; inset: 0 0 auto 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--terracotta), transparent);
+  }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .card {
+    background: var(--paper); padding: 40px 32px 36px; position: relative; overflow: hidden;
+    border: 1px solid rgba(74,51,38,.08);
+    transition: transform .6s var(--ease), box-shadow .6s var(--ease);
+  }
+  .card:nth-child(2) { transform: translateY(32px); }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -30px rgba(150,64,31,.45); }
+  .card:nth-child(2):hover { transform: translateY(26px); }
+  .card .num {
+    font-family: var(--latin); font-weight: 300; font-size: 64px; line-height: 1;
+    color: var(--amber); opacity: .7; margin-bottom: 28px;
+  }
+  .card h3 { font-family: var(--serif); font-weight: 600; font-size: 24px; letter-spacing: .08em; margin-bottom: 14px; }
+  .card p { font-size: 15px; color: var(--cocoa); }
+  .card::after {
+    content: ""; position: absolute; right: -40px; bottom: -40px; width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,96,58,.25), transparent 70%);
+    transition: transform .6s var(--ease);
+  }
+  .card:hover::after { transform: scale(1.8); }
+
+  /* 價值 */
+  .values ul { list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 64px; }
+  .values li {
+    display: grid; grid-template-columns: 120px 1fr; gap: 24px; align-items: baseline;
+    padding: 28px 0; border-bottom: 1px solid var(--line);
+  }
+  .values li .k { font-family: var(--serif); font-weight: 600; font-size: 22px; letter-spacing: .1em; color: var(--rust); }
+  .values li .v { font-size: 15px; color: var(--cocoa); }
+
+  /* 聯絡 */
+  .contact { text-align: center; padding-block: 160px 120px; }
+  .contact h2 {
+    font-family: var(--serif); font-weight: 900; font-size: clamp(40px, 7vw, 96px);
+    letter-spacing: .06em; line-height: 1.1; margin-bottom: 24px;
+  }
+  .contact h2 .latin { display: block; font-family: var(--latin); font-style: italic; font-weight: 300; font-size: .4em; color: var(--terracotta); letter-spacing: 0; }
+  .contact p { color: var(--cocoa); max-width: 480px; margin: 0 auto 48px; }
+  .btn {
+    display: inline-block; padding: 18px 44px; border-radius: 999px;
+    background: var(--terracotta); color: var(--paper); text-decoration: none;
+    font-size: 15px; letter-spacing: .2em; font-weight: 400;
+    position: relative; overflow: hidden; isolation: isolate;
+    transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .btn::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: var(--rust); transform: translateY(100%); transition: transform .4s var(--ease);
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -18px rgba(150,64,31,.7); }
+  .btn:hover::before { transform: translateY(0); }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 32px 0;
+    display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); letter-spacing: .1em;
+  }
+
+  /* 進場動畫 */
+  .up { opacity: 0; transform: translateY(28px); animation: up 1.1s var(--ease) forwards; }
+  .d1 { animation-delay: .1s } .d2 { animation-delay: .25s } .d3 { animation-delay: .4s } .d4 { animation-delay: .6s } .d5 { animation-delay: .8s }
+  @keyframes up { to { opacity: 1; transform: none; } }
+
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .up, .reveal { opacity: 1; transform: none; }
+  }
+
+  /* 響應式 */
+  @media (max-width: 1000px) {
+    .belief { grid-template-columns: 1fr; gap: 32px; }
+    .belief .text { max-width: 640px; }
+  }
+  @media (max-width: 860px) {
+    .wrap { width: min(1120px, 100% - 32px); }
+    nav ul { display: none; }
+    .hero { grid-template-columns: 1fr; align-items: start; min-height: auto; padding-bottom: 96px; }
+    .hero .statement { justify-self: start; padding-left: 0; border-left: 0; padding-top: 24px; border-top: 1px solid var(--line); }
+    section { padding-block: 80px; }
+    .cards { grid-template-columns: 1fr; }
+    .card:nth-child(2), .card:nth-child(2):hover { transform: none; }
+    .values ul { grid-template-columns: 1fr; }
+    .values li { grid-template-columns: 1fr; gap: 6px; }
+    .contact { padding-block: 100px 80px; }
+    footer { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="grain"></div>
+
+<header class="wrap">
+  <nav class="up">
+    <div class="logo">卓致遠</div>
+    <ul>
+      <li><a href="#belief">理念</a></li>
+      <li><a href="#how">方法</a></li>
+      <li><a href="#values">價值</a></li>
+      <li><a href="#contact">聯絡</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap" style="padding-top:0">
+    <div>
+      <div class="eyebrow up d1">Service Designer</div>
+      <h1 class="up d2">卓致遠<span class="latin">Chih-Yuan Cho</span></h1>
+      <p class="role up d3">服務設計師</p>
+    </div>
+    <div class="statement up d4">
+      <p>我相信好的服務不是替人完成一切，而是<strong>讓使用者有能力</strong>靠自己走到想去的地方。我做的，是把這份能力設計進每一次接觸裡。</p>
+    </div>
+    <div class="scroll up d5"><span></span>SCROLL</div>
+  </section>
+
+  <div class="band" aria-hidden="true">
+    <div class="track">
+      <span>Empower the user</span><span>服務設計</span><span>以人為本</span><span>共創</span><span>Service Blueprint</span><span>把能力還給使用者</span>
+      <span>Empower the user</span><span>服務設計</span><span>以人為本</span><span>共創</span><span>Service Blueprint</span><span>把能力還給使用者</span>
+    </div>
+  </div>
+
+  <section id="belief" class="wrap">
+    <div class="label reveal">理念 <em>Belief</em></div>
+    <div class="belief">
+      <h2 class="reveal">我喜歡<br><span class="mark">賦予使用者能力</span>。</h2>
+      <div class="text reveal">
+        <p>服務設計常被理解成「把流程變順」，但我更在意的是流程走完之後，人有沒有變得更有底氣。一個好的服務，會讓人覺得「原來我可以」，而不是「幸好有人幫我」。</p>
+        <p>所以我的設計從傾聽開始：理解人在什麼情境下卡住、為什麼卡住，再把資訊、工具與選擇權放回他們手上。能力不是我給的，是本來就在那裡，只是需要一個被看見的介面。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="how">
+    <div class="wrap">
+      <div class="label reveal">方法 <em>How I work</em></div>
+      <div class="cards">
+        <article class="card reveal">
+          <div class="num">01</div>
+          <h3>傾聽與研究</h3>
+          <p>走進真實的使用情境，透過訪談、觀察與旅程地圖，找出人與服務之間真正的斷點，而不只是表面的抱怨。</p>
+        </article>
+        <article class="card reveal">
+          <div class="num">02</div>
+          <h3>共創與設計</h3>
+          <p>把使用者、第一線同仁與決策者放在同一張桌子上。服務藍圖與原型是共同的語言，讓每個人都能參與，而非被告知。</p>
+        </article>
+        <article class="card reveal">
+          <div class="num">03</div>
+          <h3>落地與賦能</h3>
+          <p>設計的終點不是交付文件，而是讓團隊有能力持續迭代。我在意的是服務上線後，人還能不能靠自己走下去。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="values" class="wrap values">
+    <div class="label reveal">價值 <em>What I hold onto</em></div>
+    <ul>
+      <li class="reveal"><span class="k">尊重</span><span class="v">把每一位使用者當成有能力的成人，而不是需要被保護的對象。</span></li>
+      <li class="reveal"><span class="k">透明</span><span class="v">讓人知道現在在哪、接下來會發生什麼，選擇權才有意義。</span></li>
+      <li class="reveal"><span class="k">簡單</span><span class="v">拿掉不必要的步驟，留下真正重要的決定給人自己做。</span></li>
+      <li class="reveal"><span class="k">陪伴</span><span class="v">服務是一段關係，不是一次交易。設計要能承接人在旅程裡的起伏。</span></li>
+    </ul>
+  </section>
+
+  <section id="contact" class="wrap contact">
+    <h2 class="reveal">一起聊聊<span class="latin">Let's talk about empowering people.</span></h2>
+    <p class="reveal">如果你也相信服務可以讓人更有力量，無論是合作、交流或只是想聊聊，都歡迎與我聯繫。</p>
+    <a class="btn reveal" href="mailto:hello@example.com">寫信給我</a>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 卓致遠 Chih-Yuan Cho</span>
+  <span>Service Designer · 服務設計師</span>
+</footer>
+
+<script>
+  // 捲動進場
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = `${(i % 4) * 0.1}s`;
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
